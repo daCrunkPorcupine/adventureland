@@ -1,3 +1,4 @@
+// autorerun
 var attack_mode=false
 
 var loops=0;
@@ -9,13 +10,6 @@ setInterval(function(){
 
 	use_hp_or_mp();
 	loot();
-	/**
-	var check_item = "mpot0";
-	var item_count = item_quantity(check_item);
-	var item_inv = item_location(check_item);
-	game_log(check_item + ": " + item_count);
-	game_log(check_item + ": " + item_inv);
-	**/
 
 	if(!attack_mode || character.rip || is_moving(character)) return;
 
@@ -47,12 +41,15 @@ setInterval(function(){
 
 },1000/4); // Loops every 1/4 seconds.
 setInterval(function(){
-	partyAccept();  // accept party invite from jmanmage
-
-	transferPots();
-	//Runs item upgrade loops
-	//itemUpgrade();
+	//partyAccept();  // accept party invite from jmanmage
 	
+	//Runs item upgrade/compound loops
+	itemUpgrade();
+	itemCompound();
+	handleParty();
+	if(checkChar("jmanmage")==1){
+		transferPots();
+	}
 
 },6000);
 
@@ -93,8 +90,8 @@ function transferPots() {
 
 function itemUpgrade() {
 
-	if(item_location("scroll0")==-1 || item_quantity("scroll0") < 25) buy("scroll0",50);
-	//if(locate_item("scroll1")==-1 || return_item("scroll1").q<25) buy("scroll1",50);
+	if(item_location("scroll0")==-1 || item_quantity("scroll0") < 25) buy("scroll0",25);
+	//if(item_location("scroll1")==-1 || item_quantity("scroll1").q<25) buy("scroll1",50);
 
 	for(var i=0;i<42;i++)
 	{
@@ -104,7 +101,44 @@ function itemUpgrade() {
 		if(!def.upgrade) continue; // check whether the item is upgradeable
 		if(item_grade(item)==2) continue; // rare item
 		if(item_grade(item)==0) upgrade(i,item_location("scroll0"));
-		//if(item_grade(item)==1) upgrade(i,locate_item("scroll1"));
+		//if(item_grade(item)==1) upgrade(i,item_location("scroll1"));
 		break;
+	}
+}
+
+
+
+function itemCompound() {
+	var done=false;
+
+	if(item_location("cscroll0")==-1 || item_quantity("cscroll0").q<25) buy("cscroll0",25);
+
+	for(var i=0;i<42;i++)
+	{
+		if(!character.items[i]) continue;
+		var item=character.items[i];
+		var def=G.items[item.name];
+		if(!def.compound) continue; // check whether the item can be compounded
+		for(var j=i+1;j<42;j++)
+		{
+			if(!character.items[j]) continue;
+			if(character.items[j].name!=character.items[i].name) continue;
+			if(character.items[j].level!=character.items[i].level) continue;
+			for(var k=j+1;k<42;k++)
+			{
+				if(!character.items[k]) continue;
+				if(character.items[k].name!=character.items[i].name) continue;
+				if(character.items[k].level!=character.items[i].level) continue;
+				if(!done) // to prevent combining multiple items in one loop
+				{
+					var offering=null;
+					// if(item.level==2) offering=item_location("offering");
+					if(item_grade(item)==2) continue; // rare item
+					if(item_grade(item)==0) compound(i,j,k,item_location("cscroll0"),offering);
+					if(item_grade(item)==1) compound(i,j,k,item_location("cscroll1"),offering);
+					done=true;
+				}
+			}
+		}
 	}
 }

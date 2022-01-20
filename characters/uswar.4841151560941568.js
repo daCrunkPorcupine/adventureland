@@ -1,3 +1,4 @@
+// autorerun
 var attack_mode = true;
 var assist_mode = true;
 var skills_mode = true;
@@ -5,11 +6,11 @@ var skills_mode = true;
 load_code(1);
 
 setInterval(function(){
-    partyAccept();  // accept party invite from jmanmage
+    //partyAccept();  // accept party invite from jmanmage
 
 	heal_hp_or_mp();
-	//send_item_merchant();
-    loot();
+	loot();
+    handleDeath();
 	if(!attack_mode || character.rip) return;
     
 
@@ -41,13 +42,20 @@ setInterval(function(){
 			}
         }
     }
-    if (assist_mode && !target) {
-        if (distance(character, leader) > 25) {
-            move(
-                character.real_x+(leader.x-character.real_x) / 2,
-                character.real_y+(leader.y-character.real_y) / 2
-            );
+    
+    if(is_moving(character)) return;
+    if(checkChar("jmanmage")==1){
+        if (assist_mode && !target) {
+            if (distance(character, leader) > 25) {
+                move(
+                    character.real_x+(leader.x-character.real_x) / 2,
+                    character.real_y+(leader.y-character.real_y) / 2
+                );
+            }
         }
+    } else {
+        smart_move(get("leadercoords"));
+        sleep(30000);
     }
 
 },1000/4); // Loops every 1/4 seconds.
@@ -55,8 +63,9 @@ setInterval(function(){
 setInterval(function(){
 
     send_item_merchant();
+    handleParty();
 
-},6000);
+},30000);
 
 function partyAccept() {
     if (!!Object.keys(parent.party).length == true) {

@@ -1,3 +1,4 @@
+// autorerun
 var attack_mode=true;
 
 load_code(1);
@@ -7,14 +8,14 @@ setInterval(function(){
 	//function from load_code(1) 'myFunctions'
 	heal_hp_or_mp();
 	loot();
-	//send_item_merchant();
-
+	handleDeath();
 	if(!attack_mode || character.rip || is_moving(character)) return;
 
 	var target=get_targeted_monster();
 	if(!target)
 	{	
-		target=get_nearest_monster({min_xp:100,max_att:110,path_check:true,no_target:true});
+		//target=get_nearest_monster({min_xp:100,max_att:125,path_check:true,no_target:true});
+		target=get_nearest_monster({min_xp:100,max_att:125,path_check:true});
 		if(target) change_target(target);
 		else
 		{
@@ -44,11 +45,14 @@ setInterval(function(){
 
 },1000/4); // Loops every 1/4 seconds.
 //Slow loops
+
 setInterval(function(){
+	
 	send_item_merchant();
+	handleParty();
+	leaderCoord();
 
-},6000);
-
+},30000);
 
 function useReflection(target) {
 	if (target.max_hp > character.attack * 3 && get_target_of(target) == "juswar") {

@@ -1,3 +1,4 @@
+// autorerun
 var attack_mode = true;
 var assist_mode = true;
 var skills_mode = true;
@@ -5,11 +6,11 @@ var skills_mode = true;
 load_code(1);
 
 setInterval(function(){
-    partyAccept();  // accept party invite from jmanmage
+    //partyAccept();  // accept party invite from jmanmage
 
 	heal_hp_or_mp();
-	//send_item_merchant();
     loot();
+    handleDeath();
     if(!attack_mode || character.rip) return;
 
     // character entities
@@ -39,28 +40,44 @@ setInterval(function(){
 			}
         }
     }
-
-    if (distance(character, leader) > 25) {
-        move(
-            character.real_x+(leader.x-character.real_x) / 2,
-            character.real_y+(leader.y-character.real_y) / 2
-        );
+    if(is_moving(character)) return;
+    if(checkChar("jmanmage")==1){
+        if (distance(character, leader) > 25) {
+            move(
+                character.real_x+(leader.x-character.real_x) / 2,
+                character.real_y+(leader.y-character.real_y) / 2
+            );
+        }
+    } else {
+        smart_move(get("leadercoords"));
+        sleep(30000);
     }
+    
 
 },1000/4); // Loops every 1/4 seconds.
 //Slow loops
 setInterval(function(){
 	send_item_merchant();
-
-},6000);
+    handleParty();
+},30000);
 
 function useSkills(target) {
     useMark(target);
+    useSupershot(target);
 }
 
 function useMark(target) { 
     if (can_use("huntersmark", target) && target.hp > target.max_hp * 0.35) {
         game_log("Hunters Mark!");
         use_skill("huntersmark",target);
+    }
+}
+
+function useSupershot(target) {
+    var hp_multi = 8
+    //game_log("Chkatt: " + target.max_hp + " vs " + character.attack * hp_multi);
+    if (can_use("supershot", target) && target.hp > target.max_hp * 0.70 && target.max_hp > character.attack * hp_multi) {
+        game_log("Supershot!");
+        use_skill("supershot",target);
     }
 }
