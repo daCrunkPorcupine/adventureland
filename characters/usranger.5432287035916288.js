@@ -1,15 +1,15 @@
 // autorerun
 load_code(1);
-load_code(2);
 
-var attack_mode = true;
-var assist_mode = true;
-var skills_mode = true;
-var leader = "jmanmage";
+let attack_mode = true;
+let assist_mode = true;
+let skills_mode = true;
 
 
 setInterval(function(){
     //partyAccept();  // accept party invite from jmanmage
+    // character entities
+    //var leader = get_player("jmanmage");
 
 	heal_hp_or_mp();
     loot();
@@ -43,7 +43,7 @@ setInterval(function(){
     
     if(is_moving(character)) return;
     if(assist_mode){
-        if(checkChar(leader)==1){
+        if(checkChar("jmanmage")){
             if (distance(character, leader) > 25) {
                 move(
                     character.real_x+(leader.x-character.real_x) / 2,
@@ -55,11 +55,12 @@ setInterval(function(){
             sleep(30000);
         }
     }
-    
-    
+        
 
 },1000/4); // Loops every 1/4 seconds.
 //Slow loops
+
+
 setInterval(function(){
 	send_item_merchant();
     handleParty();

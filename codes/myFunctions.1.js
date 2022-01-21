@@ -1,7 +1,7 @@
 //buy("hpot0",9000);buy("mpot0",9000);
 var farmer_gold_keep = 10000;
 // character entities
-//var leader = get_player("jmanmage");
+var leader = get_player("jmanmage");
 var party_list = ['jusMerchant', 'jmanmage', 'juswar', 'jusranger'];
 var monster_list = ['goo', 'bee', 'crab', 'snake', 'armadillo', 'croc', 'spider', 'arcticbee'];
 var invites_sent = [true, false, false, false];
