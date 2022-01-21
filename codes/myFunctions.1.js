@@ -1,6 +1,9 @@
 //buy("hpot0",9000);buy("mpot0",9000);
 var farmer_gold_keep = 10000;
-var party_list = ['jusMerchant', 'jmanmage', 'juswar', 'jusranger']
+// character entities
+//var leader = get_player("jmanmage");
+var party_list = ['jusMerchant', 'jmanmage', 'juswar', 'jusranger'];
+var monster_list = ['goo', 'bee', 'crab', 'snake', 'armadillo', 'croc', 'spider', 'arcticbee'];
 var invites_sent = [true, false, false, false];
 
 function heal_hp_or_mp() {
@@ -167,6 +170,19 @@ function on_cm(name, data) {
   const isMine = parent.X.characters.some(c => c.name == name)
 }
 
+smart_move(get("leadercoords"));
+smart_move({to:"main"})
+xmove(-175,-65);
+sleep(30000);
+game_log("Moving back");
+smart_move({to:"main"});
 
+smart_move({map:"main",x:-175,y:-65});
+var leadercoords = get("leadercoords")
+smart_move({to:leadercoords,return:true},function(){sleep(60000);});
 
+??test
+getValue() {
+    return get("key") ?? undefined;
+}
 */

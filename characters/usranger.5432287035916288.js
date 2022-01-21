@@ -1,9 +1,12 @@
 // autorerun
+load_code(1);
+load_code(2);
+
 var attack_mode = true;
 var assist_mode = true;
 var skills_mode = true;
+var leader = "jmanmage";
 
-load_code(1);
 
 setInterval(function(){
     //partyAccept();  // accept party invite from jmanmage
@@ -13,14 +16,11 @@ setInterval(function(){
     handleDeath();
     if(!attack_mode || character.rip) return;
 
-    // character entities
-    var leader = get_player("jmanmage");
-
     var target;
     if (assist_mode) {
         target = get_target_of(leader);
     } else {
-        target = get_nearest_monster({min_xp:targetMinXP, max_att:targetMaxAttack});
+        target = get_nearest_monster({min_xp:100, max_att:100});
     }
 
     if (!target) {
@@ -40,18 +40,22 @@ setInterval(function(){
 			}
         }
     }
+    
     if(is_moving(character)) return;
-    if(checkChar("jmanmage")==1){
-        if (distance(character, leader) > 25) {
-            move(
-                character.real_x+(leader.x-character.real_x) / 2,
-                character.real_y+(leader.y-character.real_y) / 2
-            );
+    if(assist_mode){
+        if(checkChar(leader)==1){
+            if (distance(character, leader) > 25) {
+                move(
+                    character.real_x+(leader.x-character.real_x) / 2,
+                    character.real_y+(leader.y-character.real_y) / 2
+                );
+            }
+        } else {
+            smart_move(get("leadercoords"));
+            sleep(30000);
         }
-    } else {
-        smart_move(get("leadercoords"));
-        sleep(30000);
     }
+    
     
 
 },1000/4); // Loops every 1/4 seconds.

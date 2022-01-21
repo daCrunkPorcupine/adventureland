@@ -6,10 +6,12 @@ var loops=0;
 map_key("5","snippet","transferPots()");
 
 load_code(1);
+
 setInterval(function(){
 
 	use_hp_or_mp();
 	loot();
+	handleDeath();
 
 	if(!attack_mode || character.rip || is_moving(character)) return;
 
@@ -53,25 +55,39 @@ setInterval(function(){
 
 },6000);
 
-function partyAccept() {
-    if (!!Object.keys(parent.party).length == true) {
-        // do nothing
-    } else {
-        accept_party_invite("jmanmage");
-        game_log("Waiting for invite to party.");
-    }
+//Runs walking loop
+setInterval(function(){
+	walkLoop();
+
+
+},1000*6000);
+
+
+async function walkLoop() {
+	
+	await game_log("STARTING walkLoop()");
+	//closes stand
+	await parent.close_merchant(0);
+	await smart_move(get("leadercoords"));
+	await sleep(240000);
+	await smart_move({map:"main",x:-175,y:-65});
+	await sleep(240000);
+	await parent.open_merchant(0);
+	await game_log("FINISHED walkLoop()");
+	
 }
 
+//Change to get party names dynamically
 function transferPots() {
 	var check_item = "mpot0";
 	var item_count = item_quantity(check_item);
 	var item_inv = item_location(check_item);
 	if(item_count >= 1) {
-		send_item("jmanmage",item_inv,item_count/3);
+		send_item(party_list[1],item_inv,item_count/3);
 		sleep(100);
-		send_item("juswar",item_inv,item_count/3);
+		send_item(party_list[2],item_inv,item_count/3);
 		sleep(100);
-		send_item("jusranger",item_inv,item_count/3);
+		send_item(party_list[3],item_inv,item_count/3);
 		sleep(100);
 	}
 	sleep(100);
@@ -79,11 +95,11 @@ function transferPots() {
 	var item_count = item_quantity(check_item);
 	var item_inv = item_location(check_item);
 	if(item_count >= 1) {
-		send_item("jmanmage",item_inv,item_count/3);
+		send_item(party_list[1],item_inv,item_count/3);
 		sleep(100);
-		send_item("juswar",item_inv,item_count/3);
+		send_item(party_list[2],item_inv,item_count/3);
 		sleep(100);
-		send_item("jusranger",item_inv,item_count/3);
+		send_item(party_list[3],item_inv,item_count/3);
 		sleep(100);
 	}
 }
@@ -91,7 +107,7 @@ function transferPots() {
 function itemUpgrade() {
 
 	if(item_location("scroll0")==-1 || item_quantity("scroll0") < 25) buy("scroll0",25);
-	//if(item_location("scroll1")==-1 || item_quantity("scroll1").q<25) buy("scroll1",50);
+	//if(item_location("scroll1")==-1 || item_quantity("scroll1").q<25) buy("scroll1",25);
 
 	for(var i=0;i<42;i++)
 	{
@@ -100,13 +116,12 @@ function itemUpgrade() {
 		var def=G.items[item.name];
 		if(!def.upgrade) continue; // check whether the item is upgradeable
 		if(item_grade(item)==2) continue; // rare item
+		if(item_grade(item)==1) continue; // skip high items for now
 		if(item_grade(item)==0) upgrade(i,item_location("scroll0"));
 		//if(item_grade(item)==1) upgrade(i,item_location("scroll1"));
 		break;
 	}
 }
-
-
 
 function itemCompound() {
 	var done=false;
@@ -134,8 +149,9 @@ function itemCompound() {
 					var offering=null;
 					// if(item.level==2) offering=item_location("offering");
 					if(item_grade(item)==2) continue; // rare item
+					if(item_grade(item)==1) continue; // skip high items for now
 					if(item_grade(item)==0) compound(i,j,k,item_location("cscroll0"),offering);
-					if(item_grade(item)==1) compound(i,j,k,item_location("cscroll1"),offering);
+					//if(item_grade(item)==1) compound(i,j,k,item_location("cscroll1"),offering);
 					done=true;
 				}
 			}

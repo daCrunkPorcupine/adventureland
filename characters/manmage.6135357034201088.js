@@ -9,13 +9,15 @@ setInterval(function(){
 	heal_hp_or_mp();
 	loot();
 	handleDeath();
-	if(!attack_mode || character.rip || is_moving(character)) return;
+	if(!attack_mode || character.rip || character.moving) return;
 
 	var target=get_targeted_monster();
 	if(!target)
 	{	
 		//target=get_nearest_monster({min_xp:100,max_att:125,path_check:true,no_target:true});
-		target=get_nearest_monster({min_xp:100,max_att:125,path_check:true});
+		//target=get_nearest_monster({min_xp:100,max_att:200});
+		target=get_nearest_monster({no_target:true,path_check:true,type:monster_list[7]});
+
 		if(target) change_target(target);
 		else
 		{
@@ -24,11 +26,11 @@ setInterval(function(){
 		}
 	}
 	
-	if(!is_in_range(target))
+	if(!in_attack_range(target))
 	{
 		move(
-			character.x+(target.x-character.x)/2,
-			character.y+(target.y-character.y)/2
+			character.real_x+(target.real_x-character.real_x)/2,
+			character.real_y+(target.real_y-character.real_y)/2
 			);
 		// Walk half the distance
 	}
@@ -36,10 +38,6 @@ setInterval(function(){
 	{
 		set_message("Attacking");
 		attack(target);
-		
-		if (can_use("reflection")) {
-			useReflection(target);
-		}
 		
 	}
 
