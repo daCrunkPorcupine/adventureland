@@ -131,6 +131,59 @@ function handleDeath() {
 	// This ensures you keep on farming, yet, to retain your XP, do enhance the logic for defense
 }
 
+//Buys potions if under a certain count
+function buyPotions() {
+	if(item_location("hpot0")==-1 || item_quantity("hpot0") < 100) buy("hpot0",1000);
+	if(item_location("mpot0")==-1 || item_quantity("mpot0") < 100) buy("mpot0",1000);
+}
+
+//Movement & Targeting
+function followBot() {
+	var target;
+    if (assist_mode==true) {
+        target = get_target_of(leader);
+    } else {
+        //target = get_nearest_monster({min_xp:100, max_att:100});
+		if(!target)target=get_nearest_monster({no_target:true,path_check:true,type:monster_list[8]});
+		if(!target)target=get_nearest_monster({no_target:true,path_check:true,type:monster_list[9]});
+    }
+
+    if (!target) {
+        // do nothing
+    } else {
+        if (can_attack(target)) {
+            set_message("Attacking");
+            attack(target);
+            if (skills_mode) useSkills(target);
+        } else {
+            if (!in_attack_range(target)) {
+				if(character.ctype == "warrior") {
+                    useCharge(target);
+                }
+				move(
+					character.real_x+(target.x-character.real_x) / 2,
+					character.real_y+(target.y-character.real_y) / 2
+				);
+			}
+        }
+    }
+    
+    if(is_moving(character)) return;
+    if(!assist_mode) return;
+    if(checkChar("jmanmage")==1){
+        if (distance(character, leader) > 25) {
+            move(
+                character.real_x+(leader.x-character.real_x) / 2,
+                character.real_y+(leader.y-character.real_y) / 2
+            );
+        }
+    } else {
+        smart_move(get("leadercoords"));
+        sleep(30000);
+    }
+}
+
+
 //Code Snippets / tests or unused code
 /**
 smart_move({to:"main"});

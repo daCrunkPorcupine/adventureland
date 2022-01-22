@@ -13,64 +13,14 @@ setInterval(function(){
 	loot();
     handleDeath();
 	if(!attack_mode || character.rip) return;
-    
-
-    var target;
-    if (assist_mode) {
-        target = get_target_of(leader);
-    } else {
-        target = get_nearest_monster({min_xp:100, max_att:120});
-    }
-
-    if (!target) {
-        // do nothing
-    } else {
-        if (can_attack(target)) {
-            set_message("Attacking");
-            attack(target);
-			if (skills_mode) useSkills(target);
-
-        } else {
-            if (!in_attack_range(target)) {
-				useCharge(target);
-                move(
-					character.real_x+(target.x-character.real_x) / 2,
-					character.real_y+(target.y-character.real_y) / 2
-				);
-			}
-        }
-    }
-    
-    if(is_moving(character)) return;
-        if(checkChar("jmanmage")==1){
-            if (distance(character, leader) > 25) {
-                move(
-                    character.real_x+(leader.x-character.real_x) / 2,
-                    character.real_y+(leader.y-character.real_y) / 2
-                );
-            }
-        } else {
-            smart_move(get("leadercoords"));
-            sleep(30000);
-        }
+    followBot();
 
 },1000/4); // Loops every 1/4 seconds.
 //Slow loops
 setInterval(function(){
-
     send_item_merchant();
     handleParty();
-
 },30000);
-
-function partyAccept() {
-    if (!!Object.keys(parent.party).length == true) {
-        // do nothing
-    } else {
-        accept_party_invite(leader);
-        game_log("Waiting for invite to party.");
-    }
-}
 
 function useSkills(target) {
     var hp_multi = 8
@@ -79,8 +29,7 @@ function useSkills(target) {
         use_skill("taunt", target);
     }
     //Stomps if target Max HP is higher (change logic to higher attack targets?)
-    if (!is_on_cooldown("stomp") && target.hp > target.max_hp * 0.50 && target.max_hp > character.attack * hp_multi) {
-        game_log("RAAAAAWR!");
+    if (can_use("stomp") && target.hp > target.max_hp * 0.50 && target.max_hp > character.attack * hp_multi) {
         use_skill("stomp",target);
     }
 }
@@ -91,8 +40,4 @@ function useCharge(target) {
         game_log("Charge!");
         use_skill("charge",target);
     }
-}
-
-function useTaunt(target) { 
-
 }

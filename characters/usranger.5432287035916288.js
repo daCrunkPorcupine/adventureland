@@ -2,7 +2,7 @@
 load_code(1);
 
 let attack_mode = true;
-let assist_mode = true;
+let assist_mode = false;
 let skills_mode = true;
 
 
@@ -13,55 +13,13 @@ setInterval(function(){
     loot();
     handleDeath();
     if(!attack_mode || character.rip) return;
-
-    var target;
-    if (assist_mode) {
-        target = get_target_of(leader);
-    } else {
-        target = get_nearest_monster({min_xp:100, max_att:100});
-    }
-
-    if (!target) {
-        // do nothing
-    } else {
-        if (can_attack(target)) {
-            set_message("Attacking");
-            attack(target);
-			//useMark(target);
-            if (skills_mode) useSkills(target);
-        } else {
-            if (!in_attack_range(target)) {
-				move(
-					character.real_x+(target.x-character.real_x) / 2,
-					character.real_y+(target.y-character.real_y) / 2
-				);
-			}
-        }
-    }
+    followBot();
     
-    if(is_moving(character)) return;
-        if(checkChar("jmanmage")==1){
-            if (distance(character, leader) > 25) {
-                move(
-                    character.real_x+(leader.x-character.real_x) / 2,
-                    character.real_y+(leader.y-character.real_y) / 2
-                );
-            }
-        } else {
-            smart_move(get("leadercoords"));
-            sleep(30000);
-        }
-        
-
 },1000/4); // Loops every 1/4 seconds.
 //Slow loops
-
-
 setInterval(function(){
 	send_item_merchant();
     handleParty();
-    character.real_x+(leader.x-character.real_x) / 2,
-    character.real_y+(leader.y-character.real_y) / 2
 },30000);
 
 function useSkills(target) {

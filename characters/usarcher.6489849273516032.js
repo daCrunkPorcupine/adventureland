@@ -1,9 +1,10 @@
 // autorerun
-var attack_mode = true;
-var assist_mode = false;
-var skills_mode = true;
-
 load_code(1);
+
+let attack_mode = true;
+let assist_mode = false;
+let skills_mode = true;
+
 
 setInterval(function(){
     //partyAccept();  // accept party invite from jmanmage
@@ -12,9 +13,6 @@ setInterval(function(){
     loot();
     handleDeath();
     if(!attack_mode || character.rip) return;
-
-    // character entities
-    var leader = get_player("jmanmage");
 
     var target;
     if (assist_mode) {
@@ -40,24 +38,26 @@ setInterval(function(){
 			}
         }
     }
-    if(is_moving(character)) return;
-    if(assist_mode){
-        if(checkChar(leader)==1){
-            if (distance(character, leader) > 25) {
-                move(
-                    character.real_x+(leader.x-character.real_x) / 2,
-                    character.real_y+(leader.y-character.real_y) / 2
-                );
-            }
-        } else {
-            smart_move(get("leadercoords"));
-            sleep(30000);
-        }
-    }
     
+    if(is_moving(character)) return;
+    if(!assist_mode) return;
+    if(checkChar("jmanmage")==1){
+        if (distance(character, leader) > 25) {
+            move(
+                character.real_x+(leader.x-character.real_x) / 2,
+                character.real_y+(leader.y-character.real_y) / 2
+            );
+        }
+    } else {
+        smart_move(get("leadercoords"));
+        sleep(30000);
+    }
+        
 
 },1000/4); // Loops every 1/4 seconds.
 //Slow loops
+
+
 setInterval(function(){
 	send_item_merchant();
     handleParty();
