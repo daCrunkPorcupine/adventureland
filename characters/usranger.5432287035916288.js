@@ -8,8 +8,6 @@ let skills_mode = true;
 
 setInterval(function(){
     //partyAccept();  // accept party invite from jmanmage
-    // character entities
-    //var leader = get_player("jmanmage");
 
 	heal_hp_or_mp();
     loot();
@@ -42,8 +40,7 @@ setInterval(function(){
     }
     
     if(is_moving(character)) return;
-    if(assist_mode){
-        if(checkChar("jmanmage")){
+        if(checkChar("jmanmage")==1){
             if (distance(character, leader) > 25) {
                 move(
                     character.real_x+(leader.x-character.real_x) / 2,
@@ -54,7 +51,6 @@ setInterval(function(){
             smart_move(get("leadercoords"));
             sleep(30000);
         }
-    }
         
 
 },1000/4); // Loops every 1/4 seconds.
@@ -64,6 +60,8 @@ setInterval(function(){
 setInterval(function(){
 	send_item_merchant();
     handleParty();
+    character.real_x+(leader.x-character.real_x) / 2,
+    character.real_y+(leader.y-character.real_y) / 2
 },30000);
 
 function useSkills(target) {

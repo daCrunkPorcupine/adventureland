@@ -15,9 +15,6 @@ setInterval(function(){
 	if(!attack_mode || character.rip) return;
     
 
-    // character entities
-    var leader = get_player("jmanmage");
-
     var target;
     if (assist_mode) {
         target = get_target_of(leader);
@@ -45,7 +42,7 @@ setInterval(function(){
     }
     
     if(is_moving(character)) return;
-        if(checkChar("jmanmage")){
+        if(checkChar("jmanmage")==1){
             if (distance(character, leader) > 25) {
                 move(
                     character.real_x+(leader.x-character.real_x) / 2,

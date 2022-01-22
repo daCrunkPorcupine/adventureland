@@ -16,8 +16,8 @@ setInterval(function(){
 	{	
 		//target=get_nearest_monster({min_xp:100,max_att:125,path_check:true,no_target:true});
 		//target=get_nearest_monster({min_xp:100,max_att:200});
-		target=get_nearest_monster({no_target:true,path_check:true,type:monster_list[7]});
-
+		if(!target)target=get_nearest_monster({no_target:true,path_check:true,type:monster_list[8]});
+		if(!target)target=get_nearest_monster({no_target:true,path_check:true,type:monster_list[9]});
 		if(target) change_target(target);
 		else
 		{

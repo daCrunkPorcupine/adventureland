@@ -3,7 +3,7 @@ var farmer_gold_keep = 10000;
 // character entities
 var leader = get_player("jmanmage");
 var party_list = ['jusMerchant', 'jmanmage', 'juswar', 'jusranger'];
-var monster_list = ['goo', 'bee', 'crab', 'snake', 'armadillo', 'croc', 'spider', 'arcticbee'];
+var monster_list = ['goo', 'bee', 'crab', 'snake', 'armadillo', 'croc', 'spider', 'arcticbee','osnake','snake'];
 var invites_sent = [true, false, false, false];
 
 function heal_hp_or_mp() {
@@ -35,16 +35,6 @@ function heal_hp_or_mp() {
 		}
 	}
 }
-/**
-function partyAccept() {
-    if (!!Object.keys(parent.party).length == true) {
-        // do nothing
-    } else {
-        accept_party_invite("jmanmage");
-        game_log("Waiting for invite to party.");
-    }
-}
-**/
 
 //Checks for number of item in inventory. Helpful for potion counts (hpot0 or mpot0)
 function item_quantity(name) {
@@ -141,22 +131,13 @@ function handleDeath() {
 	// This ensures you keep on farming, yet, to retain your XP, do enhance the logic for defense
 }
 
-//Code Snippets
+//Code Snippets / tests or unused code
 /**
-
 smart_move({to:"main"});
-smart_move({to:"main",return:true},function(){ game_log("HUZZAH!");});
-
-smart_move({to:get("MAGELOC"),return:true},function(){sleep(60000);});
-
+smart_move({to:"main",return:true},function(){ game_log("HUZZAH!");}); 
 
 var merchant = "jusMerchant"
-function leaderCoord() {
-	var coordinates = { map:character.map, x:character.real_x, y:character.real_y }
-	set("leadercoords", coordinates);
-
-}
-//send_cm sends a trigger to merchant
+//send_cm sends a trigger to merchant with coords, can handle events when recieving send_cm
 send_cm(merchant, "leadercoords");
 
 function on_cm(name, data) {

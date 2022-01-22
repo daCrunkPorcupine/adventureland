@@ -46,7 +46,7 @@ setInterval(function(){
 	//partyAccept();  // accept party invite from jmanmage
 	
 	//Runs item upgrade/compound loops
-	itemUpgrade();
+	//itemUpgrade();
 	itemCompound();
 	handleParty();
 	if(checkChar("jmanmage")==1){
