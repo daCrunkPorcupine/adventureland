@@ -1,9 +1,9 @@
 //buy("hpot0",9000);buy("mpot0",9000);
 var farmer_gold_keep = 10000;
 // character entities
-var leader = get_player("jmanmage");
+const leader = "jmanmage";
 var party_list = ['jusMerchant', 'jmanmage', 'juswar', 'jusranger'];
-var monster_list = ['goo', 'bee', 'crab', 'snake', 'armadillo', 'croc', 'spider', 'arcticbee','osnake','snake'];
+var monster_list = ['goo', 'bee', 'crab', 'snake', 'armadillo', 'croc', 'spider', 'arcticbee','osnake','snake','bat','goldenbat'];
 var invites_sent = [true, false, false, false];
 
 function heal_hp_or_mp() {
@@ -128,32 +128,36 @@ function leaderCoord() {
 function handleDeath() {
 	setTimeout(respawn,25000);
 	return true;
-	// This ensures you keep on farming, yet, to retain your XP, do enhance the logic for defense
+	
 }
 
 //Buys potions if under a certain count
 function buyPotions() {
-	if(item_location("hpot0")==-1 || item_quantity("hpot0") < 100) buy("hpot0",1000);
-	if(item_location("mpot0")==-1 || item_quantity("mpot0") < 100) buy("mpot0",1000);
+	//if(item_location("hpot0")==-1 || item_quantity("hpot0") < 100) buy("hpot0",1000);
+	if(item_location("mpot0")==-1 || item_quantity("mpot0") < 100) buy("mpot0",3000);
 }
 
 //Movement & Targeting
 function followBot() {
 	var target;
-    if (assist_mode==true) {
-        target = get_target_of(leader);
+    if (assist_mode) {
+		const leader_entity = get_player(leader);
+		target = get_target_of(leader_entity);
     } else {
         //target = get_nearest_monster({min_xp:100, max_att:100});
-		if(!target)target=get_nearest_monster({no_target:true,path_check:true,type:monster_list[8]});
-		if(!target)target=get_nearest_monster({no_target:true,path_check:true,type:monster_list[9]});
+		target = get_target_of(leader);
+		if(!target)target=get_nearest_monster({path_check:true,type:monster_list[8]});
+		if(!target)target=get_nearest_monster({path_check:true,type:monster_list[9]});
+		if(!target)target=get_nearest_monster({path_check:true,type:monster_list[11]});
+		if(!target)target=get_nearest_monster({path_check:true,type:monster_list[10]});
     }
 
     if (!target) {
         // do nothing
     } else {
-        if (can_attack(target)) {
+        if (!is_on_cooldown("attack")) {
             set_message("Attacking");
-            attack(target);
+            funcAttack(target);
             if (skills_mode) useSkills(target);
         } else {
             if (!in_attack_range(target)) {
@@ -170,17 +174,24 @@ function followBot() {
     
     if(is_moving(character)) return;
     if(!assist_mode) return;
-    if(checkChar("jmanmage")==1){
-        if (distance(character, leader) > 25) {
-            move(
-                character.real_x+(leader.x-character.real_x) / 2,
-                character.real_y+(leader.y-character.real_y) / 2
-            );
-        }
-    } else {
+	
+	if (!target && assist_mode==true && distance(character, leader) >= 25) {
+		move(
+			character.real_x+(leader.x-character.real_x) / 2,
+			character.real_y+(leader.y-character.real_y) / 2
+		);
+		return;
+	} else if (!get_player(leader)) {
+		smart_move(get("leadercoords"));
+	}
+	
+	
+	/**
+	if (get_player("jmanmage")==false) {
         smart_move(get("leadercoords"));
         sleep(30000);
     }
+	**/
 }
 
 

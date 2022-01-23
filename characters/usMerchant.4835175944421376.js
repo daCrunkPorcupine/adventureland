@@ -46,7 +46,7 @@ setInterval(function(){
 	//partyAccept();  // accept party invite from jmanmage
 	
 	//Runs item upgrade/compound loops
-	//itemUpgrade();
+	itemUpgrade();
 	itemCompound();
 	buyPotions();
 	handleParty();
@@ -68,12 +68,12 @@ async function walkLoop() {
 	
 	await game_log("STARTING walkLoop()");
 	//closes stand
-	await parent.close_merchant(0);
+	//await parent.close_merchant(0);
 	await smart_move(get("leadercoords"));
 	await sleep(240000);
 	await smart_move({map:"main",x:-175,y:-65});
 	await sleep(240000);
-	await parent.open_merchant(0);
+	//await parent.open_merchant(0);
 	await game_log("FINISHED walkLoop()");
 	
 }

@@ -1,5 +1,6 @@
 // autorerun
 load_code(1);
+load_code("mainfunctions");
 
 let attack_mode = true;
 let assist_mode = true;
@@ -7,11 +8,9 @@ let skills_mode = true;
 
 
 setInterval(function(){
-    //partyAccept();  // accept party invite from jmanmage
-
 	heal_hp_or_mp();
-	loot();
-    handleDeath();
+	funcLoop();
+    if(character.rip) handleDeath();
 	if(!attack_mode || character.rip) return;
     followBot();
 

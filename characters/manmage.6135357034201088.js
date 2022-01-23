@@ -18,6 +18,8 @@ setInterval(function(){
 		//target=get_nearest_monster({min_xp:100,max_att:200});
 		if(!target)target=get_nearest_monster({no_target:true,path_check:true,type:monster_list[8]});
 		if(!target)target=get_nearest_monster({no_target:true,path_check:true,type:monster_list[9]});
+		if(!target)target=get_nearest_monster({path_check:true,type:monster_list[11]});
+		if(!target)target=get_nearest_monster({path_check:true,type:monster_list[10]});
 		if(target) change_target(target);
 		else
 		{
@@ -50,7 +52,7 @@ setInterval(function(){
 	handleParty();
 	leaderCoord();
 
-},30000);
+},10000);
 
 function useReflection(target) {
 	if (target.max_hp > character.attack * 3 && get_target_of(target) == "juswar") {
