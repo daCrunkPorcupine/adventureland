@@ -1,9 +1,10 @@
 //buy("hpot0",9000);buy("mpot0",9000);
 var farmer_gold_keep = 10000;
 // character entities
-var leader = "jmanmage";
+var leader = 'jmanmage';
 var party_list = ['jusMerchant', 'jmanmage', 'juswar', 'jusranger'];
-var monster_list = ['goo', 'bee', 'crab', 'snake', 'armadillo', 'croc', 'spider', 'arcticbee','osnake','snake','bat','goldenbat','poisio'];
+const phat_targets = ['goldenbat','snowman','cutebee','phoenix'];
+const monster_list = ['goo', 'bee', 'crab', 'snake', 'armadillo', 'croc', 'spider', 'arcticbee','osnake','snake','bat','poisio'];
 var invites_sent = [true, false, false, false];
 
 function heal_hp_or_mp() {
@@ -133,8 +134,8 @@ function handleDeath() {
 
 //Buys potions if under a certain count
 function buyPotions() {
-	//if(item_location("hpot0")==-1 || item_quantity("hpot0") < 100) buy("hpot0",1000);
-	if(item_location("mpot0")==-1 || item_quantity("mpot0") < 100) buy("mpot0",3000);
+	if(item_location("hpot0")==-1 || item_quantity("hpot0") < 100) buy("hpot0",500);
+	if(item_location("mpot0")==-1 || item_quantity("mpot0") < 100) buy("mpot0",500);
 }
 
 //Movement & Targeting

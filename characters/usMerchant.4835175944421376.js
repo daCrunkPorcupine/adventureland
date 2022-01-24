@@ -49,7 +49,7 @@ setInterval(function(){
 	//Runs item upgrade/compound loops
 	itemUpgrade();
 	itemCompound();
-	//buyPotions();
+	buyPotions();
 	handleParty();
 	if(checkChar("jmanmage")==1){
 		transferPots();
@@ -60,9 +60,7 @@ setInterval(function(){
 //Runs walking loop
 setInterval(function(){
 	walkLoop();
-
-
-},1000*6000);
+},1000*3000);
 
 
 async function walkLoop() {
@@ -81,31 +79,37 @@ async function walkLoop() {
 	
 }
 
-//Change to get party names dynamically
-function transferPots() {
+//IDEA: Change to get party names dynamically;
+//IDEA: Change to loop
+async function transferPots() {
 	var check_item = "mpot0";
 	var item_count = item_quantity(check_item);
 	var item_inv = item_location(check_item);
 	if(item_count >= 1) {
 		send_item(party_list[1],item_inv,item_count/3);
-		sleep(100);
+		await sleep(250);
 		send_item(party_list[2],item_inv,item_count/3);
-		sleep(100);
+		await sleep(250);
 		send_item(party_list[3],item_inv,item_count/3);
-		sleep(100);
+		await sleep(250);
 	}
-	sleep(100);
+	
 	var check_item = "hpot0";
 	var item_count = item_quantity(check_item);
 	var item_inv = item_location(check_item);
 	if(item_count >= 1) {
 		send_item(party_list[1],item_inv,item_count/3);
-		sleep(100);
+		await sleep(250);
 		send_item(party_list[2],item_inv,item_count/3);
-		sleep(100);
+		await sleep(250);
 		send_item(party_list[3],item_inv,item_count/3);
-		sleep(100);
+		await sleep(250);
 	}
+	await use_skill("mluck",party_list[1]);
+	await sleep(250);
+	await use_skill("mluck",party_list[2]);
+	await sleep(250);
+	await use_skill("mluck",party_list[3]);
 }
 
 function itemUpgrade() {

@@ -8,19 +8,28 @@ setInterval(function(){
 	//function from load_code(1) 'myFunctions'
 	heal_hp_or_mp();
 	loot();
-	handleDeath();
+	if(character.rip) handleDeath();
 	if(!attack_mode || character.rip || character.moving) return;
 
 	var target=get_targeted_monster();
-	if(!target)
-	{	
+	if(!target)	{
+		for(let targetArray of phat_targets) {
+			target = get_nearest_monster({type:targetArray})
+		}
+		if(!target) {
+			for(let targetArray of monster_list) {
+				target = get_nearest_monster({type:targetArray})
+			}	
+		}
 		//target=get_nearest_monster({min_xp:100,max_att:125,path_check:true,no_target:true});
 		//target=get_nearest_monster({min_xp:100,max_att:200});
+		/**
 		if(!target)target=get_nearest_monster({no_target:true,path_check:true,type:monster_list[8]});
 		if(!target)target=get_nearest_monster({no_target:true,path_check:true,type:monster_list[9]});
 		if(!target)target=get_nearest_monster({path_check:true,type:monster_list[11]});
 		if(!target)target=get_nearest_monster({path_check:true,type:monster_list[10]});
 		if(!target)target=get_nearest_monster({path_check:true,type:monster_list[12]});
+		**/
 		if(target) change_target(target);
 		else
 		{
