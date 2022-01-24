@@ -2,7 +2,7 @@
 load_code(1);
 
 let attack_mode = true;
-let assist_mode = false;
+let assist_mode = true;
 let skills_mode = true;
 
 
@@ -42,10 +42,11 @@ setInterval(function(){
     if(is_moving(character)) return;
     if(!assist_mode) return;
     if(checkChar("jmanmage")==1){
-        if (distance(character, leader) > 25) {
+        let leader_entity = get_player(leader);
+        if (distance(character, leader_entity) > 25) {
             move(
-                character.real_x+(leader.x-character.real_x) / 2,
-                character.real_y+(leader.y-character.real_y) / 2
+                character.real_x+(leader_entity.x-character.real_x) / 2,
+                character.real_y+(leader_entity.y-character.real_y) / 2
             );
         }
     } else {

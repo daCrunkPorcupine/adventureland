@@ -48,7 +48,7 @@ setInterval(function(){
 	//Runs item upgrade/compound loops
 	itemUpgrade();
 	itemCompound();
-	buyPotions();
+	//buyPotions();
 	handleParty();
 	if(checkChar("jmanmage")==1){
 		transferPots();
@@ -68,12 +68,14 @@ async function walkLoop() {
 	
 	await game_log("STARTING walkLoop()");
 	//closes stand
-	//await parent.close_merchant(0);
+	await parent.close_merchant(0);
+	await sleep(250);
 	await smart_move(get("leadercoords"));
 	await sleep(240000);
 	await smart_move({map:"main",x:-175,y:-65});
 	await sleep(240000);
-	//await parent.open_merchant(0);
+	await parent.open_merchant(0);
+	await sleep(250);
 	await game_log("FINISHED walkLoop()");
 	
 }

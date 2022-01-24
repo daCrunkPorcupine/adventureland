@@ -1,7 +1,7 @@
 //buy("hpot0",9000);buy("mpot0",9000);
 var farmer_gold_keep = 10000;
 // character entities
-const leader = "jmanmage";
+var leader = "jmanmage";
 var party_list = ['jusMerchant', 'jmanmage', 'juswar', 'jusranger'];
 var monster_list = ['goo', 'bee', 'crab', 'snake', 'armadillo', 'croc', 'spider', 'arcticbee','osnake','snake','bat','goldenbat'];
 var invites_sent = [true, false, false, false];
@@ -141,7 +141,7 @@ function buyPotions() {
 function followBot() {
 	var target;
     if (assist_mode) {
-		const leader_entity = get_player(leader);
+		var leader_entity = get_player(leader);
 		target = get_target_of(leader_entity);
     } else {
         //target = get_nearest_monster({min_xp:100, max_att:100});
@@ -155,9 +155,10 @@ function followBot() {
     if (!target) {
         // do nothing
     } else {
-        if (!is_on_cooldown("attack")) {
+        if (!is_on_cooldown("attack") && in_attack_range(target)) {
             set_message("Attacking");
-            funcAttack(target);
+            attack(target);
+			//funcAttack(target);
             if (skills_mode) useSkills(target);
         } else {
             if (!in_attack_range(target)) {
@@ -173,25 +174,19 @@ function followBot() {
     }
     
     if(is_moving(character)) return;
-    if(!assist_mode) return;
-	
-	if (!target && assist_mode==true && distance(character, leader) >= 25) {
-		move(
-			character.real_x+(leader.x-character.real_x) / 2,
-			character.real_y+(leader.y-character.real_y) / 2
-		);
-		return;
-	} else if (!get_player(leader)) {
-		smart_move(get("leadercoords"));
-	}
-	
-	
-	/**
-	if (get_player("jmanmage")==false) {
+	if(!assist_mode) return;
+    if(checkChar("jmanmage")==1) {
+        let leader_entity = get_player(leader);
+        if (!target && distance(character, leader_entity) >= 25) {
+            move(
+                character.real_x+(leader_entity.x-character.real_x) / 2,
+                character.real_y+(leader_entity.y-character.real_y) / 2
+            );
+        }
+    } else if (checkChar("jmanmage")==0) {
         smart_move(get("leadercoords"));
         sleep(30000);
     }
-	**/
 }
 
 

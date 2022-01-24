@@ -6,25 +6,24 @@ let attack_mode = true;
 let assist_mode = true;
 let skills_mode = true;
 
-
 setInterval(function(){
 	heal_hp_or_mp();
     funcLoop();
-    //if(character.rip) handleDeath();
+    if(character.rip) handleDeath();
     if(!attack_mode || character.rip) return;
     followBot();
     
 },1000/4); // Loops every 1/4 seconds.
 //Slow loops
 setInterval(function(){
-	//send_item_merchant();
+	send_item_merchant();
     handleParty();
     //game_log("looping /30000")
 },30000);
 
 function useSkills(target) {
-    //useMark(target);
-    //useSupershot(target);
+    useMark(target);
+    useSupershot(target);
 }
 
 function useMark(target) { 
