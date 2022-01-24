@@ -1,7 +1,8 @@
 // autorerun
 var attack_mode=false
 
-var loops=0;
+var upgrade_whitelist = ['pickaxe','rod'];
+
 
 map_key("5","snippet","transferPots()");
 
@@ -114,7 +115,7 @@ function itemUpgrade() {
 
 	for(var i=0;i<42;i++)
 	{
-		if(!character.items[i]) continue;
+		if(!character.items[i] || upgrade_whitelist.includes(character.items[i].name)) continue;
 		var item=character.items[i];
 		var def=G.items[item.name];
 		if(!def.upgrade) continue; // check whether the item is upgradeable
@@ -133,7 +134,7 @@ function itemCompound() {
 
 	for(var i=0;i<42;i++)
 	{
-		if(!character.items[i]) continue;
+		if(!character.items[i] || upgrade_whitelist.includes(character.items[i].name)) continue;
 		var item=character.items[i];
 		var def=G.items[item.name];
 		if(!def.compound) continue; // check whether the item can be compounded

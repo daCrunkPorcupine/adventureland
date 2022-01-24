@@ -20,6 +20,7 @@ setInterval(function(){
 		if(!target)target=get_nearest_monster({no_target:true,path_check:true,type:monster_list[9]});
 		if(!target)target=get_nearest_monster({path_check:true,type:monster_list[11]});
 		if(!target)target=get_nearest_monster({path_check:true,type:monster_list[10]});
+		if(!target)target=get_nearest_monster({path_check:true,type:monster_list[12]});
 		if(target) change_target(target);
 		else
 		{

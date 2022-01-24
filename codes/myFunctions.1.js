@@ -3,7 +3,7 @@ var farmer_gold_keep = 10000;
 // character entities
 var leader = "jmanmage";
 var party_list = ['jusMerchant', 'jmanmage', 'juswar', 'jusranger'];
-var monster_list = ['goo', 'bee', 'crab', 'snake', 'armadillo', 'croc', 'spider', 'arcticbee','osnake','snake','bat','goldenbat'];
+var monster_list = ['goo', 'bee', 'crab', 'snake', 'armadillo', 'croc', 'spider', 'arcticbee','osnake','snake','bat','goldenbat','poisio'];
 var invites_sent = [true, false, false, false];
 
 function heal_hp_or_mp() {
@@ -187,6 +187,11 @@ function followBot() {
         smart_move(get("leadercoords"));
         sleep(30000);
     }
+}
+//Verifies all characters are on the same server
+function checkServer() {
+	//Add check server / move functions
+	//charcter.server
 }
 
 
