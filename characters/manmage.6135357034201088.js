@@ -1,4 +1,5 @@
 // autorerun
+// Mage code (Primary Leader)
 var attack_mode=true;
 
 load_code(1);

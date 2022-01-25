@@ -3,6 +3,7 @@ var farmer_gold_keep = 10000;
 // character entities
 var leader = 'jmanmage';
 let party_list = ['jusMerchant', 'jmanmage', 'juspriest', 'jusranger'];
+//phat_targets are priority
 let phat_targets = ['goldenbat','snowman','cutebee','phoenix'];
 let monster_list = ['iceroamer','bee','crab','armadillo', 'croc','spider','arcticbee','osnake','snake','bat','minimush','poisio'];
 var invites_sent = [true, false, false, false];
