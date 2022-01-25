@@ -1,68 +1,41 @@
-var attack_mode = true;
-var assist_mode = true;
-var skills_mode = true;
-
+// autorerun
 load_code(1);
+load_code("mainfunctions");
+
+let attack_mode = true;
+let assist_mode = true;
+let skills_mode = true;
+
 
 setInterval(function(){
-    partyAccept();  // accept party invite from jmanmage
-
-    heal_hp_or_mp();
-    loot();
-    //send_item_merchant();
+	heal_hp_or_mp();
+	funcLoop();
+    if(character.rip) handleDeath();
 	if(!attack_mode || character.rip) return;
-    
-    // character entities
-    var leader = get_player("jmanmage");
+    followBot();
 
-    var target;
-    if (assist_mode) {
-        target = get_target_of(leader);
+},1000/4); // Loops every 1/4 seconds.
+//Slow loops
+setInterval(function(){
+    send_item_merchant();
+    handleParty();
+},30000);
+
+
+function useSkills(target) {
+    //Heals self, or runs heal_party() to check party member HP
+    if (character.hp < character.max_hp * 0.30) { 
+        heal(character); 
     } else {
-        target = get_nearest_monster({min_xp:targetMinXP, max_att:targetMaxAttack});
+        heal_party();
+    }
+        
+    if (can_use("curse", target) && target.hp > target.max_hp * 0.35) {
+        game_log("Curse!");
+        use_skill("curse",target);
     }
 
-    if (!target) {
-        // do nothing
-    } else {
-        if (can_attack(target)) {
-            set_message("Attacking");
-            attack(target);
-            
-            //Heals self, or runs heal_party() to check party member HP
-            if (character.hp < character.max_hp * 0.30) { 
-                heal(character); 
-            } else {
-                heal_party();
-            }
-            useCurse(target);
-            //if (skills_mode) useCombatSkills(target);
-        } else {
-            if (!in_attack_range(target)) {
-				move(
-					character.real_x+(target.x-character.real_x) / 2,
-					character.real_y+(target.y-character.real_y) / 2
-				);
-			}
-        }
-    }
 
-    if (distance(character, leader) > 100) {
-        move(
-            character.real_x+(leader.x-character.real_x) / 2,
-            character.real_y+(leader.y-character.real_y) / 2
-        );
-    }
-
-},1000/4);  // loops every 1/4 seconds.
-
-function partyAccept() {
-    if (!!Object.keys(parent.party).length == true) {
-        // do nothing
-    } else {
-        accept_party_invite("jmanmage");
-        game_log("Waiting for invite to party.");
-    }
 }
 
 function heal_party() {

@@ -2,9 +2,9 @@
 var farmer_gold_keep = 10000;
 // character entities
 var leader = 'jmanmage';
-var party_list = ['jusMerchant', 'jmanmage', 'juswar', 'jusranger'];
-const phat_targets = ['goldenbat','snowman','cutebee','phoenix'];
-const monster_list = ['goo', 'bee', 'crab', 'snake', 'armadillo', 'croc', 'spider', 'arcticbee','osnake','snake','bat','poisio'];
+let party_list = ['jusMerchant', 'jmanmage', 'juspriest', 'jusranger'];
+let phat_targets = ['goldenbat','snowman','cutebee','phoenix'];
+let monster_list = ['goo', 'bee', 'crab', 'snake', 'armadillo', 'croc', 'spider', 'arcticbee','osnake','snake','bat','minimush','poisio'];
 var invites_sent = [true, false, false, false];
 
 function heal_hp_or_mp() {
@@ -20,7 +20,7 @@ function heal_hp_or_mp() {
 	} else if (attack_mode == true) {
 		//If below 600HP or under 50% mana, use a potion
 		//Else use regen_mp / regen_hp to conserve potions
-		if (character.hp<=character.max_hp*0.75 || character.mp<=character.max_mp*0.7){
+		if (character.hp<=character.max_hp*0.8 || character.mp<=character.max_mp*0.8){
 			//game_log("USING POTION");
 			use_hp_or_mp();
 		} else {
@@ -134,8 +134,8 @@ function handleDeath() {
 
 //Buys potions if under a certain count
 function buyPotions() {
-	if(item_location("hpot0")==-1 || item_quantity("hpot0") < 100) buy("hpot0",500);
-	if(item_location("mpot0")==-1 || item_quantity("mpot0") < 100) buy("mpot0",500);
+	if(item_location("hpot0")==-1 || item_quantity("hpot0") < 100) buy("hpot0",300);
+	if(item_location("mpot0")==-1 || item_quantity("mpot0") < 100) buy("mpot0",300);
 }
 
 //Movement & Targeting
@@ -158,9 +158,9 @@ function followBot() {
     } else {
         if (!is_on_cooldown("attack") && in_attack_range(target)) {
             set_message("Attacking");
-            attack(target);
-			//funcAttack(target);
             if (skills_mode) useSkills(target);
+			attack(target);
+			//funcAttack(target);
         } else {
             if (!in_attack_range(target)) {
 				if(character.ctype == "warrior") {

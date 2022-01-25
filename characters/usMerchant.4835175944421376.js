@@ -60,12 +60,12 @@ setInterval(function(){
 //Runs walking loop
 setInterval(function(){
 	walkLoop();
-},1000*3000);
+},1000*900);
 
 
 async function walkLoop() {
 	
-	await game_log("STARTING walkLoop()");
+	console.log("STARTING walkLoop()");
 	//closes stand
 	await parent.close_merchant(0);
 	await sleep(250);
@@ -75,7 +75,7 @@ async function walkLoop() {
 	await sleep(240000);
 	await parent.open_merchant(0);
 	await sleep(250);
-	await game_log("FINISHED walkLoop()");
+	console.log("FINISHED walkLoop()");
 	
 }
 
