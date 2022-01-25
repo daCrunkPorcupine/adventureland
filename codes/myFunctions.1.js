@@ -4,7 +4,7 @@ var farmer_gold_keep = 10000;
 var leader = 'jmanmage';
 let party_list = ['jusMerchant', 'jmanmage', 'juspriest', 'jusranger'];
 let phat_targets = ['goldenbat','snowman','cutebee','phoenix'];
-let monster_list = ['goo', 'bee', 'crab', 'snake', 'armadillo', 'croc', 'spider', 'arcticbee','osnake','snake','bat','minimush','poisio'];
+let monster_list = ['iceroamer','bee','crab','armadillo', 'croc','spider','arcticbee','osnake','snake','bat','minimush','poisio'];
 var invites_sent = [true, false, false, false];
 
 function heal_hp_or_mp() {
@@ -194,41 +194,3 @@ function checkServer() {
 	//Add check server / move functions
 	//charcter.server
 }
-
-
-//Code Snippets / tests or unused code
-/**
-smart_move({to:"main"});
-smart_move({to:"main",return:true},function(){ game_log("HUZZAH!");}); 
-
-var merchant = "jusMerchant"
-//send_cm sends a trigger to merchant with coords, can handle events when recieving send_cm
-send_cm(merchant, "leadercoords");
-
-function on_cm(name, data) {
-  if(name == "player_id_who_i_want_to_collect_things_from") {
-    if(data == "leadercoords") {
-      smart_move(get("leadercoords"))
-    }
-  }
-}
-function on_cm(name, data) {
-  const isMine = parent.X.characters.some(c => c.name == name)
-}
-
-smart_move(get("leadercoords"));
-smart_move({to:"main"})
-xmove(-175,-65);
-sleep(30000);
-game_log("Moving back");
-smart_move({to:"main"});
-
-smart_move({map:"main",x:-175,y:-65});
-var leadercoords = get("leadercoords")
-smart_move({to:leadercoords,return:true},function(){sleep(60000);});
-
-??test
-getValue() {
-    return get("key") ?? undefined;
-}
-*/
