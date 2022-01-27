@@ -27,17 +27,18 @@ function useSkills(target) {
     useSupershot(target);
 }
 
-function useMark(target) { 
-    if (!is_on_cooldown("huntersmark") && target.hp >= target.max_hp * 0.35) {
+function useMark(target) {
+    var hp_multi = 6
+    if (!is_on_cooldown("huntersmark") && target.hp >= character.attack * hp_multi) {
         game_log("Hunters Mark!");
         use_skill("huntersmark",target);
     }
 }
 
 function useSupershot(target) {
-    var hp_multi = 8
+    var hp_multi = 6
     //game_log("Chkatt: " + target.max_hp + " vs " + character.attack * hp_multi);
-    if (!is_on_cooldown("supershot") && target.hp >= target.max_hp * 0.70 && target.max_hp >= character.attack * hp_multi) {
+    if (!is_on_cooldown("supershot") && target.hp >= character.attack * hp_multi) {
         game_log("Supershot!");
         use_skill("supershot",target);
     }

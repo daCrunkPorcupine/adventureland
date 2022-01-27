@@ -10,7 +10,7 @@ load_code(1);
 
 setInterval(function(){
 
-	use_hp_or_mp();
+	heal_hp_or_mp();
 	loot();
 	handleDeath();
 
@@ -49,7 +49,7 @@ setInterval(function(){
 	//Runs item upgrade/compound loops
 	itemUpgrade();
 	itemCompound();
-	//buyPotions();
+	buyPotions();
 	handleParty();
 	if(checkChar("jmanmage")==1){
 		transferPots();
@@ -123,6 +123,9 @@ function itemUpgrade() {
 		var item=character.items[i];
 		var def=G.items[item.name];
 		if(!def.upgrade) continue; // check whether the item is upgradeable
+		if(can_use("massproduction")) {
+			use_skill("massproduction");
+		}
 		if(item_grade(item)==2) continue; // rare item
 		if(item_grade(item)==1) continue; // skip high items for now
 		if(item_grade(item)==0) upgrade(i,item_location("scroll0"));
@@ -156,6 +159,9 @@ function itemCompound() {
 				{
 					var offering=null;
 					// if(item.level==2) offering=item_location("offering");
+					if(can_use("massproduction")) {
+						use_skill("massproduction");
+					}
 					if(item_grade(item)==2) continue; // rare item
 					if(item_grade(item)==1) continue; // skip high items for now
 					if(item_grade(item)==0) compound(i,j,k,item_location("cscroll0"),offering);

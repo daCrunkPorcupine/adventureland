@@ -15,12 +15,12 @@ setInterval(function(){
 	var target=get_targeted_monster();
 	if(!target)	{
 		for(let targetArray of phat_targets) {
-			target = get_nearest_monster({type:targetArray})
+			target = get_nearest_monster({path_check:true,type:targetArray})
 			if(target) break;
 		}
 		if(!target) {
 			for(let targetArray of monster_list) {
-				target = get_nearest_monster({type:targetArray});
+				target = get_nearest_monster({path_check:true,type:targetArray});
 				if(target) break;
 			}	
 		}

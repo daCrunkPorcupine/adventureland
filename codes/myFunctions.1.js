@@ -4,7 +4,7 @@ var farmer_gold_keep = 10000;
 var leader = 'jmanmage';
 let party_list = ['jusMerchant', 'jmanmage', 'juspriest', 'jusranger'];
 //phat_targets are priority
-let phat_targets = ['goldenbat','snowman','cutebee','phoenix'];
+let phat_targets = ['goldenbat','snowman','cutebee','phoenix','mvampire'];
 let monster_list = ['iceroamer','bee','crab','armadillo', 'croc','spider','arcticbee','osnake','snake','bat','minimush','poisio'];
 var invites_sent = [true, false, false, false];
 
@@ -12,11 +12,14 @@ function heal_hp_or_mp() {
 	//If attack mode is enabled, use potions when at certain HP points
 	//If attack mode is disabled, use regen_hp or regen_mp
 	if(!attack_mode) {
-		if (character.hp<character.max_hp) {
-			use_skill ("regen_hp");
-		}
-		if (character.mp<character.max_mp) {
-			use_skill ("regen_mp");
+		if((character.hp/character.max_hp) >= (character.mp/character.max_mp)) {
+			if (!is_on_cooldown("regen_mp") && character.mp<character.max_mp) {
+				//game_log("using regen_mp");
+				use_skill("regen_mp");
+			}
+		} else if (!is_on_cooldown("regen_hp") && character.hp<character.max_hp) {
+			//game_log("using regen_hp");
+			use_skill("regen_hp");
 		}
 	} else if (attack_mode == true) {
 		//If below 600HP or under 50% mana, use a potion
@@ -135,7 +138,7 @@ function handleDeath() {
 
 //Buys potions if under a certain count
 function buyPotions() {
-	if(item_location("hpot0")==-1 || item_quantity("hpot0") < 100) buy("hpot0",300);
+	//if(item_location("hpot0")==-1 || item_quantity("hpot0") < 100) buy("hpot0",300);
 	if(item_location("mpot0")==-1 || item_quantity("mpot0") < 100) buy("mpot0",300);
 }
 

@@ -33,12 +33,13 @@ function useSkills(target) {
     } else {
         heal_party();
     }
-    
-    if (can_use("curse", target) && target.hp >= target.max_hp * 0.70 && target.max_hp >= character.attack * hp_multi) {
+
+	party_heal();
+
+    if (can_use("curse", target) && target.hp >= character.attack * hp_multi) {
         game_log("Curse!");
         use_skill("curse",target);
     }
-
 
 }
 
@@ -61,5 +62,25 @@ function heal_party() {
 	if (target != null) {
 		set_message("Healing");
 		heal(target);
+	}
+}
+
+async function party_heal() {
+	let heal_counter = 0;
+	for (var i = 0; i < parent.party_list.length; i++) {
+		if (checkChar(parent.party_list[i])) {
+			var member = get_player(parent.party_list[i]);
+			//game_log(parent.party_list[i] + " hp/max: " + member.hp + "/" + member.max_hp);
+			if (member != null && !member.rip && member.hp <= member.max_hp * 0.7) {
+				//game_log("Increment heal_counter");
+				heal_counter++;
+			}	
+		}
+		await sleep(100);
+	}
+	if (heal_counter >= 2 && character.mp > character.max_mp * 0.5) {
+		game_log("Party heal!");
+		console.log("SKILL: PARTY HEAL");
+		use_skill("partyheal");
 	}
 }
