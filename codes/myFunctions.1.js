@@ -2,11 +2,13 @@
 var farmer_gold_keep = 10000;
 // character entities
 var leader = 'jmanmage';
-let party_list = ['jusMerchant', 'jmanmage', 'juspriest', 'jusranger'];
+let party_list = ['jusMerchant', 'jmanmage', 'juspriest', 'juswar'];
 //phat_targets are priority
 let phat_targets = ['goldenbat','snowman','cutebee','phoenix','mvampire'];
-let monster_list = ['iceroamer','bee','crab','armadillo', 'croc','spider','arcticbee','osnake','snake','bat','minimush','poisio'];
+let monster_list = ['iceroamer','osnake','snake','bat','minimush','poisio','boar','arcticbee'];
 var invites_sent = [true, false, false, false];
+var mpot_ct;
+var hpot_ct;
 
 function heal_hp_or_mp() {
 	//If attack mode is enabled, use potions when at certain HP points
@@ -137,9 +139,15 @@ function handleDeath() {
 }
 
 //Buys potions if under a certain count
-function buyPotions() {
-	//if(item_location("hpot0")==-1 || item_quantity("hpot0") < 100) buy("hpot0",300);
-	if(item_location("mpot0")==-1 || item_quantity("mpot0") < 100) buy("mpot0",300);
+function buyPotions(hpot_ct,mpot_ct) {
+	//if(item_location("hpot0")==-1 || item_quantity("hpot0") < 100) buy("hpot0",hpot_ct);
+	//if(item_location("mpot0")==-1 || item_quantity("mpot0") < 100) buy("mpot0",mpot_ct);
+	if(item_location("hpot0")==-1 || item_quantity("hpot0") < hpot_ct) {
+		buy("hpot0",(hpot_ct - item_quantity("hpot0")));
+	}
+	if(item_location("mpot0")==-1 || item_quantity("mpot0") < mpot_ct) {
+		buy("mpot0",(mpot_ct - item_quantity("mpot0")));
+	}
 }
 
 //Movement & Targeting

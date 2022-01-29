@@ -25,6 +25,7 @@ setInterval(function(){
 function useSkills(target) {
     useMark(target);
     useSupershot(target);
+    
 }
 
 function useMark(target) {

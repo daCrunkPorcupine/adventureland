@@ -1,6 +1,7 @@
 // autorerun
 // Mage code (Primary Leader)
 var attack_mode=true;
+let skills_mode = true;
 
 load_code(1);
 
@@ -46,6 +47,7 @@ setInterval(function(){
 	else if(can_attack(target))
 	{
 		set_message("Attacking");
+		if (skills_mode) useSkills(target);
 		attack(target);
 		
 	}
@@ -62,9 +64,20 @@ setInterval(function(){
 },10000);
 
 function useReflection(target) {
-	if (target.max_hp > character.attack * 3 && get_target_of(target) == "juswar") {
-		game_log("Using Reflection!");
-		use_skill("reflection",target);
+
+
+}
+
+function useSkills(target) {
+    //Variables
+	var hp_multi = 5
+
+	if (!is_on_cooldown("reflection") && target.hp >= character.attack * hp_multi) {
+		let tank_entity = get_player('juswar');
+		if (get_target_of(target)==tank_entity) {
+			game_log('Using Reflection!');
+			use_skill('reflection','juswar');
+		}
 	}
 
 }

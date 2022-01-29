@@ -13,34 +13,20 @@ setInterval(function(){
 	heal_hp_or_mp();
 	loot();
 	handleDeath();
-
+	if(!is_moving(character)) {
+		parent.open_merchant(0);
+	} else if (is_moving(character)) {
+		parent.close_merchant(0);
+	}
 	if(!attack_mode || character.rip || is_moving(character)) return;
 
-	var target=get_targeted_monster();
-	if(!target)
-	{
-		target=get_nearest_monster({min_xp:100,max_att:120});
-		if(target) change_target(target);
-		else
-		{
-			set_message("No Monsters");
-			return;
-		}
-	}
-	
-	if(!is_in_range(target))
-	{
-		move(
-			character.x+(target.x-character.x)/2,
-			character.y+(target.y-character.y)/2
-			);
-		// Walk half the distance
-	}
-	else if(can_attack(target))
-	{
-		set_message("Attacking");
-		attack(target);
-	}
+	/**
+	//IDEA: Add FISH/MINE
+	if(off cooldown(fish)
+  		do_fish()
+	else if( off cooldown(mine)
+		do_mine()
+	**/
 
 },1000/4); // Loops every 1/4 seconds.
 setInterval(function(){
@@ -49,7 +35,7 @@ setInterval(function(){
 	//Runs item upgrade/compound loops
 	itemUpgrade();
 	itemCompound();
-	buyPotions();
+	buyPotions(100,100);
 	handleParty();
 	if(checkChar("jmanmage")==1){
 		transferPots();
@@ -60,7 +46,7 @@ setInterval(function(){
 //Runs walking loop
 setInterval(function(){
 	walkLoop();
-},1200000);
+},1800000);
 
 
 async function walkLoop() {
@@ -115,7 +101,7 @@ async function transferPots() {
 function itemUpgrade() {
 
 	if(item_location("scroll0")==-1 || item_quantity("scroll0") < 25) buy("scroll0",25);
-	//if(item_location("scroll1")==-1 || item_quantity("scroll1").q<25) buy("scroll1",25);
+	if(item_location("scroll1")==-1 || item_quantity("scroll1") < 25) buy("scroll1",25);
 
 	for(var i=0;i<42;i++)
 	{
@@ -129,7 +115,7 @@ function itemUpgrade() {
 		if(item_grade(item)==2) continue; // rare item
 		if(item_grade(item)==1) continue; // skip high items for now
 		if(item_grade(item)==0) upgrade(i,item_location("scroll0"));
-		//if(item_grade(item)==1) upgrade(i,item_location("scroll1"));
+		if(item_grade(item)==1) upgrade(i,item_location("scroll1"));
 		break;
 	}
 }
@@ -137,7 +123,7 @@ function itemUpgrade() {
 function itemCompound() {
 	var done=false;
 
-	if(item_location("cscroll0")==-1 || item_quantity("cscroll0").q<25) buy("cscroll0",25);
+	if(item_location("cscroll0")==-1 || item_quantity("cscroll0") < 25) buy("cscroll0",25);
 
 	for(var i=0;i<42;i++)
 	{
