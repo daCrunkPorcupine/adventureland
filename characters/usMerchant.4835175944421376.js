@@ -35,7 +35,7 @@ setInterval(function(){
 	//Runs item upgrade/compound loops
 	itemUpgrade();
 	itemCompound();
-	buyPotions(100,100);
+	buyPotions(50,50);
 	handleParty();
 	if(checkChar("jmanmage")==1){
 		transferPots();
