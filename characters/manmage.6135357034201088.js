@@ -1,9 +1,10 @@
 // autorerun
 // Mage code (Primary Leader)
 var attack_mode=true;
-let skills_mode = true;
+let skills_mode=true;
 
 load_code(1);
+load_code("mainfunctions");
 
 setInterval(function(){
 
@@ -21,6 +22,7 @@ setInterval(function(){
 		}
 		if(!target) {
 			for(let targetArray of monster_list) {
+				if(!attack_mode || character.rip || character.moving) return;
 				target = get_nearest_monster({path_check:true,type:targetArray});
 				if(target) break;
 			}	
@@ -32,6 +34,10 @@ setInterval(function(){
 		else
 		{
 			set_message("No Monsters");
+			//Moves to farming area if out of range / dead
+			if(!is_moving(character)) {
+				smart_move('iceroamer');
+			}
 			return;
 		}
 	}
@@ -49,7 +55,6 @@ setInterval(function(){
 		set_message("Attacking");
 		if (skills_mode) useSkills(target);
 		attack(target);
-		
 	}
 
 },1000/4); // Loops every 1/4 seconds.

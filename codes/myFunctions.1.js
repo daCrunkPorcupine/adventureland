@@ -5,7 +5,7 @@ var leader = 'jmanmage';
 let party_list = ['jusMerchant', 'jmanmage', 'juspriest', 'juswar'];
 //phat_targets are priority
 let phat_targets = ['goldenbat','snowman','cutebee','phoenix','mvampire'];
-let monster_list = ['iceroamer','osnake','snake','bat','minimush','poisio','boar','arcticbee'];
+let monster_list = ['iceroamer','osnake','snake','bat','minimush','poisio','arcticbee','booboo'];
 var invites_sent = [true, false, false, false];
 var mpot_ct;
 var hpot_ct;
@@ -132,8 +132,9 @@ function leaderCoord() {
 }
 
 //Death respawn. Pulled from examples
-function handleDeath() {
+async function handleDeath() {
 	setTimeout(respawn,25000);
+	await ns.sleep(1000);
 	return true;
 	
 }
@@ -171,24 +172,29 @@ function followBot() {
         if (!is_on_cooldown("attack") && in_attack_range(target)) {
             set_message("Attacking");
             if (skills_mode) useSkills(target);
-			attack(target);
-			//funcAttack(target);
+			//attack(target);
+			funcAttack(target);
         } else {
             if (!in_attack_range(target)) {
 				if(character.ctype == "warrior") {
                     useCharge(target);
                 }
+				//smart_move(target);
+
+				xmove(character.x + (target.x - character.x) / 2, character.y + (target.y - character.y) / 2);
+				/**
 				move(
 					character.real_x+(target.x-character.real_x) / 2,
 					character.real_y+(target.y-character.real_y) / 2
 				);
+				**/
 			}
         }
     }
     
     if(is_moving(character)) return;
 	if(!assist_mode) return;
-    if(checkChar("jmanmage")==1) {
+	if(checkChar("jmanmage")==1 && assist_mode) {
         let leader_entity = get_player(leader);
         if (!target && distance(character, leader_entity) >= 25) {
             move(
@@ -196,10 +202,13 @@ function followBot() {
                 character.real_y+(leader_entity.y-character.real_y) / 2
             );
         }
-    } else if (checkChar("jmanmage")==0) {
-        smart_move(get("leadercoords"));
+    } else if (checkChar("jmanmage")==0 && assist_mode) {
+        if(!is_moving(character)) {
+			smart_move(get("leadercoords"));
+		}
         sleep(30000);
     }
+	
 }
 //Verifies all characters are on the same server
 function checkServer() {

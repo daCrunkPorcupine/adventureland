@@ -35,7 +35,7 @@ setInterval(function(){
 	//Runs item upgrade/compound loops
 	itemUpgrade();
 	itemCompound();
-	buyPotions(50,50);
+	buyPotions(50,300);
 	handleParty();
 	if(checkChar("jmanmage")==1){
 		transferPots();
@@ -101,7 +101,7 @@ async function transferPots() {
 function itemUpgrade() {
 
 	if(item_location("scroll0")==-1 || item_quantity("scroll0") < 25) buy("scroll0",25);
-	if(item_location("scroll1")==-1 || item_quantity("scroll1") < 25) buy("scroll1",25);
+	//if(item_location("scroll1")==-1 || item_quantity("scroll1") < 25) buy("scroll1",25);
 
 	for(var i=0;i<42;i++)
 	{
