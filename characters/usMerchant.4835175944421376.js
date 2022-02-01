@@ -12,7 +12,7 @@ setInterval(function(){
 
 	heal_hp_or_mp();
 	loot();
-	handleDeath();
+	if(character.rip) handleDeath();
 	if(!is_moving(character)) {
 		parent.open_merchant(0);
 	} else if (is_moving(character)) {
@@ -35,7 +35,7 @@ setInterval(function(){
 	//Runs item upgrade/compound loops
 	itemUpgrade();
 	itemCompound();
-	buyPotions(50,300);
+	buyPotions(30,30);
 	handleParty();
 	if(checkChar("jmanmage")==1){
 		transferPots();
@@ -45,6 +45,7 @@ setInterval(function(){
 
 //Runs walking loop
 setInterval(function(){
+	//mine();
 	walkLoop();
 },1800000);
 
@@ -157,4 +158,58 @@ function itemCompound() {
 			}
 		}
 	}
+}
+
+async function mine() {
+    try {
+		let inv_pickaxe = item_location('pickaxe');
+		let inv_wep = item_location('ornamentstaff');
+		let coordinates = { map:'tunnel', x:'-280', y:'-38' }
+		await smart_move(coordinates);
+		await ns.sleep(100);
+		unequip('mainhand');
+		await ns.sleep(100);
+		equip(inv_pickaxe,'mainhand');
+		while (can_use('mining')) {
+			await use_skill('mining');
+			await ns.sleep(100);
+		}
+		await ns.sleep(100);
+		unequip('mainhand');
+		await ns.sleep(100);
+		equip(inv_wep,'mainhand');
+		await ns.sleep(100);
+		//await smart_move({map:"main",x:-175,y:-65});
+
+    } catch (e) {
+        console.error(e)
+    }
+    //setTimeout(async () => { mine() }, 1000);
+}
+
+async function fish() {
+    try {
+		let inv_tool = item_location('rod');
+		let inv_wep = item_location('ornamentstaff');
+		let coordinates = {map:'main',x:'-1364',y:'-94'}
+		await smart_move(coordinates);
+		await ns.sleep(100);
+		unequip('mainhand');
+		await ns.sleep(100);
+		equip(inv_tool,'mainhand');
+		while (can_use('fishing')) {
+			await use_skill('fishing');
+			await ns.sleep(100);
+		}
+		await ns.sleep(100);
+		unequip('mainhand');
+		await ns.sleep(100);
+		equip(inv_wep,'mainhand');
+		await ns.sleep(100);
+		await smart_move({map:"main",x:-175,y:-65});
+
+    } catch (e) {
+        console.error(e)
+    }
+    //setTimeout(async () => { fish() }, 1000);
 }

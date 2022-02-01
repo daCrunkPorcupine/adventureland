@@ -12,7 +12,7 @@ async function funcAttack(target) {
     } catch (e) {
         console.error(e)
     }
-    setTimeout(async () => { funcAttack() }, Math.max(100, ms_to_next_skill("attack")))
+    setTimeout(async () => { funcAttack() }, 1000);
 }
 
 /**

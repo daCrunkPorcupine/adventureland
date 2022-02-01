@@ -172,8 +172,8 @@ function followBot() {
         if (!is_on_cooldown("attack") && in_attack_range(target)) {
             set_message("Attacking");
             if (skills_mode) useSkills(target);
-			//attack(target);
-			funcAttack(target);
+			attack(target);
+			//funcAttack(target);
         } else {
             if (!in_attack_range(target)) {
 				if(character.ctype == "warrior") {
@@ -214,4 +214,21 @@ function followBot() {
 function checkServer() {
 	//Add check server / move functions
 	//charcter.server
+}
+
+function fixAddLog()
+{
+    if (parent.addLogFixed) {
+        return;
+    }
+
+    const oldAddLog = parent.add_log;
+    const regex = /killed|gold/;
+    parent.add_log = (message, color) => {
+        if (typeof message === 'string' && !message.match(regex)) {
+            oldAddLog(message, color);
+        }
+    };
+
+    parent.addLogFixed = true;
 }
