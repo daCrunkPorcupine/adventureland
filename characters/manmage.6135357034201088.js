@@ -1,7 +1,7 @@
 // autorerun
-// Mage code (Primary Leader)
+// Mage code (Primary Leader) //
 var attack_mode=true;
-let skills_mode=true;
+var skills_mode=true;
 
 load_code(1);
 load_code("mainfunctions");
@@ -36,7 +36,9 @@ setInterval(function(){
 			set_message("No Monsters");
 			//Moves to farming area if out of range / dead
 			if(!is_moving(character)) {
-				smart_move('iceroamer');
+				//smart_move('iceroamer');
+				let coordinates = {map:'cave',x:'138',y:'-1167'}
+				smart_move(coordinates);
 			}
 			return;
 		}

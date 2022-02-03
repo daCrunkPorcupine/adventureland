@@ -11,9 +11,12 @@ var mpot_ct;
 var hpot_ct;
 
 function heal_hp_or_mp() {
-	//If attack mode is enabled, use potions when at certain HP points
-	//If attack mode is disabled, use regen_hp or regen_mp
-	if(!attack_mode) {
+	//If below 80%HP or under 70% mana, use a potion
+	//Else use regen_mp / regen_hp to conserve potions
+	if (character.hp<=character.max_hp*0.8 || character.mp<=character.max_mp*0.7){
+		//game_log("USING POTION");
+		use_hp_or_mp();
+	} else {
 		if((character.hp/character.max_hp) >= (character.mp/character.max_mp)) {
 			if (!is_on_cooldown("regen_mp") && character.mp<character.max_mp) {
 				//game_log("using regen_mp");
@@ -22,23 +25,6 @@ function heal_hp_or_mp() {
 		} else if (!is_on_cooldown("regen_hp") && character.hp<character.max_hp) {
 			//game_log("using regen_hp");
 			use_skill("regen_hp");
-		}
-	} else if (attack_mode == true) {
-		//If below 600HP or under 50% mana, use a potion
-		//Else use regen_mp / regen_hp to conserve potions
-		if (character.hp<=character.max_hp*0.8 || character.mp<=character.max_mp*0.8){
-			//game_log("USING POTION");
-			use_hp_or_mp();
-		} else {
-			if((character.hp/character.max_hp) >= (character.mp/character.max_mp)) {
-				if (!is_on_cooldown("regen_mp") && character.mp<character.max_mp) {
-					//game_log("using regen_mp");
-					use_skill("regen_mp");
-				}
-			} else if (!is_on_cooldown("regen_hp") && character.hp<character.max_hp) {
-				//game_log("using regen_hp");
-				use_skill("regen_hp");
-			}
 		}
 	}
 }
@@ -192,7 +178,7 @@ function followBot() {
         }
     }
     
-    if(is_moving(character)) return;
+    //if(is_moving(character)) return;
 	if(!assist_mode) return;
 	if(checkChar("jmanmage")==1 && assist_mode) {
         let leader_entity = get_player(leader);
@@ -204,7 +190,11 @@ function followBot() {
         }
     } else if (checkChar("jmanmage")==0 && assist_mode) {
         if(!is_moving(character)) {
-			smart_move(get("leadercoords"));
+			//smart_move(get("leadercoords"));
+			if(is_moving(character)) return;
+			//Test & Fix smartmove
+			let coordinates = {map:'cave',x:'138',y:'-1167'}
+			smart_move(coordinates);
 		}
         sleep(30000);
     }
