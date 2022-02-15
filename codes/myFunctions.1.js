@@ -7,6 +7,8 @@ let party_list = ['jusMerchant', 'jmanmage', 'juspriest', 'juswar'];
 let phat_targets = ['goldenbat','snowman','cutebee','phoenix','mvampire'];
 let monster_list = ['iceroamer','osnake','snake','bat','minimush','poisio','arcticbee','booboo'];
 var invites_sent = [true, false, false, false];
+const junk = ['ringsj', 'hpamulet', 'hpbelt','bwing'];
+const merchantTown = {map:"main",x:-175,y:-65};
 var mpot_ct;
 var hpot_ct;
 
@@ -190,11 +192,16 @@ function followBot() {
         }
     } else if (checkChar("jmanmage")==0 && assist_mode) {
         if(!is_moving(character)) {
-			//smart_move(get("leadercoords"));
 			if(is_moving(character)) return;
+			smart_move(get("leadercoords"));
 			//Test & Fix smartmove
-			let coordinates = {map:'cave',x:'138',y:'-1167'}
-			smart_move(coordinates);
+			//bats
+			//let coordinates = {map:'cave',x:'138',y:'-1167'}
+			//arcticbee
+			//let coordinates = {map:'winterland',x:'682',y:'-967'}
+			//iceroamer
+			//let coordinates = {map:'winterland',x:'608',y:'4'}
+			//smart_move(coordinates);
 		}
         sleep(30000);
     }
@@ -221,4 +228,31 @@ function fixAddLog()
     };
 
     parent.addLogFixed = true;
+}
+
+async function selljunk() {
+    for (id in junk) {
+        let loc = locate_item(junk[id]);
+        while(loc >= 0) {
+            sell(loc, 1);
+            loc = locate_item(junk[id]);
+            await sleep(10);
+        }
+    }
+}
+
+async function returnTown() {
+	await smart_move(merchantTown);
+}
+
+async function itemExchange() {
+	let gemLoc = item_location('gem0');
+	await smart_move('exchange');
+	await sleep(100);
+	for(let i = 0; i < item_quantity('gem0'); i++) {
+		exchange(gemLoc);
+		await sleep(10000);
+		game_log(i);
+	}
+	await returnTown();
 }

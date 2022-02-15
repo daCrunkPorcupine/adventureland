@@ -3,7 +3,6 @@ var attack_mode=false
 
 var upgrade_whitelist = ['pickaxe','rod'];
 
-
 map_key("5","snippet","transferPots()");
 
 load_code(1);
@@ -29,25 +28,30 @@ setInterval(function(){
 	**/
 
 },1000/4); // Loops every 1/4 seconds.
-setInterval(function(){
-	//partyAccept();  // accept party invite from jmanmage
-	
+setInterval(async function(){
 	//Runs item upgrade/compound loops
 	itemUpgrade();
 	itemCompound();
-	buyPotions(30,30);
+	
+	buyPotions(100,100);
 	handleParty();
 	if(checkChar("jmanmage")==1){
 		transferPots();
 	}
+	
 
 },6000);
 
 //Runs walking loop
-setInterval(function(){
+setInterval(async function(){
 	//mine();
+	if(item_quantity('gem0') > 0) {
+		await itemExchange();
+		return;
+	}
 	walkLoop();
-},1800000);
+},900000);
+//1800000
 
 
 async function walkLoop() {
@@ -57,12 +61,13 @@ async function walkLoop() {
 	await parent.close_merchant(0);
 	await sleep(250);
 	await smart_move(get("leadercoords"));
-	await sleep(120000);
-	await smart_move({map:"main",x:-175,y:-65});
-	await sleep(120000);
+	await sleep(60000);
+	await returnTown();
+	await sleep(250);
 	await parent.open_merchant(0);
 	await sleep(250);
 	console.log("FINISHED walkLoop()");
+	selljunk();
 	
 }
 
@@ -102,11 +107,12 @@ async function transferPots() {
 function itemUpgrade() {
 
 	if(item_location("scroll0")==-1 || item_quantity("scroll0") < 25) buy("scroll0",25);
-	//if(item_location("scroll1")==-1 || item_quantity("scroll1") < 25) buy("scroll1",25);
+	if(item_location("scroll1")==-1 || item_quantity("scroll1") < 25) buy("scroll1",25);
 
 	for(var i=0;i<42;i++)
 	{
 		if(!character.items[i] || upgrade_whitelist.includes(character.items[i].name)) continue;
+		let itemProp = item_properties(character.items[i]);
 		var item=character.items[i];
 		var def=G.items[item.name];
 		if(!def.upgrade) continue; // check whether the item is upgradeable
@@ -114,7 +120,7 @@ function itemUpgrade() {
 			use_skill("massproduction");
 		}
 		if(item_grade(item)==2) continue; // rare item
-		if(item_grade(item)==1) continue; // skip high items for now
+		if(item_grade(item)==1 && itemProp.level >= 8) continue; // skip high > level
 		if(item_grade(item)==0) upgrade(i,item_location("scroll0"));
 		if(item_grade(item)==1) upgrade(i,item_location("scroll1"));
 		break;
@@ -179,7 +185,7 @@ async function mine() {
 		await ns.sleep(100);
 		equip(inv_wep,'mainhand');
 		await ns.sleep(100);
-		//await smart_move({map:"main",x:-175,y:-65});
+		await returnTown();
 
     } catch (e) {
         console.error(e)
@@ -206,7 +212,7 @@ async function fish() {
 		await ns.sleep(100);
 		equip(inv_wep,'mainhand');
 		await ns.sleep(100);
-		await smart_move({map:"main",x:-175,y:-65});
+		await returnTown();
 
     } catch (e) {
         console.error(e)

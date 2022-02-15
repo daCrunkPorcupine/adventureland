@@ -36,8 +36,15 @@ setInterval(function(){
 			set_message("No Monsters");
 			//Moves to farming area if out of range / dead
 			if(!is_moving(character)) {
-				//smart_move('iceroamer');
+				//bats
 				let coordinates = {map:'cave',x:'138',y:'-1167'}
+				//arcticbee
+				//let coordinates = {map:'winterland',x:'682',y:'-967'}
+				//iceroamer
+				//let coordinates = {map:'winterland',x:'608',y:'4'}
+				//mushrooms
+				//let coordinates = {map:'halloween',x:'-156',y:'535'}
+				
 				smart_move(coordinates);
 			}
 			return;

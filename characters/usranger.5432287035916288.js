@@ -9,18 +9,18 @@ let skills_mode = true;
 
 setInterval(function(){
 	heal_hp_or_mp();
-    funcLoop();
+	funcLoop();
     if(character.rip) handleDeath();
-    if(!attack_mode || character.rip) return;
+	if(!attack_mode || character.rip) return;
     followBot();
-    
+
 },1000/4); // Loops every 1/4 seconds.
 //Slow loops
 setInterval(function(){
-	send_item_merchant();
+    send_item_merchant();
     handleParty();
-    //game_log("looping /30000")
 },30000);
+
 
 function useSkills(target) {
     useMark(target);
@@ -55,7 +55,7 @@ function skill3shot(targets, manaReserve = 0.7) {
     if(targets.length < 3) return // Not enough targets to 3shot
     
     // Remove all targets out of range
-    const inRangeTargets = []
+    let inRangeTargets = [];
     for(const target of targets) {
         if(!is_in_range(target)) continue // Out of range
         inRangeTargets.push(target)

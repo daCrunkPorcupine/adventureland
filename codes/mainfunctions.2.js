@@ -10,8 +10,24 @@ function testing() {
 
 async function funcAttack(target) {
     try {
+        if (target){
+            //attacks the target set waits for confirmation from server before sending
+            if(distance(character, target) <= character.range) {
                 await attack(target);
                 reduce_cooldown("attack", Math.min(...parent.pings))
+            }
+            else {
+                if (distance(character, target) > character.range) {
+                    if(character.ctype == "warrior") {
+                        useCharge(target);
+                    }
+                    move(
+                        character.real_x+(target.x-character.real_x) / 2,
+                        character.real_y+(target.y-character.real_y) / 2
+                    );
+                }
+            }
+        }
     } catch (e) {
         console.error(e)
     }
