@@ -5,6 +5,7 @@ var skills_mode=true;
 
 load_code(1);
 load_code("mainfunctions");
+fixAddLog();
 
 setInterval(function(){
 

@@ -1,11 +1,13 @@
 // autorerun
 var attack_mode=false
 
-var upgrade_whitelist = ['pickaxe','rod'];
+const upgrade_whitelist = ['pickaxe','rod'];
+
 
 map_key("5","snippet","transferPots()");
 
 load_code(1);
+fixAddLog();
 
 setInterval(function(){
 
@@ -33,7 +35,7 @@ setInterval(async function(){
 	itemUpgrade();
 	itemCompound();
 	
-	buyPotions(100,100);
+	//buyPotions(100,100);
 	handleParty();
 	if(checkChar("jmanmage")==1){
 		transferPots();
@@ -120,7 +122,7 @@ function itemUpgrade() {
 			use_skill("massproduction");
 		}
 		if(item_grade(item)==2) continue; // rare item
-		if(item_grade(item)==1 && itemProp.level >= 8) continue; // skip high > level
+		if(item_grade(item)==1 && itemProp.level >= 7) continue; // skip high > level
 		if(item_grade(item)==0) upgrade(i,item_location("scroll0"));
 		if(item_grade(item)==1) upgrade(i,item_location("scroll1"));
 		break;
@@ -135,6 +137,7 @@ function itemCompound() {
 	for(var i=0;i<42;i++)
 	{
 		if(!character.items[i] || upgrade_whitelist.includes(character.items[i].name)) continue;
+		if(sell_list.includes(character.items[i].name)) continue;
 		var item=character.items[i];
 		var def=G.items[item.name];
 		if(!def.compound) continue; // check whether the item can be compounded
@@ -218,4 +221,27 @@ async function fish() {
         console.error(e)
     }
     //setTimeout(async () => { fish() }, 1000);
+}
+
+async function sellItems() {
+	for (let i = 0; i < sell_list.length; i++) {
+		let sell_item = item_location(sell_list[i]);
+		if (sell_item != null) listTrade(sell_item);
+	}
+	
+}
+
+async function listTrade(sell_item) {
+	//let slots = [];
+    for(let i = 0; i <= 15; i++)
+    {
+		let slot = character.slots['trade' + i];
+        if (slot == 'null') {
+			let item_price = 11000;
+			trade(sell_item,slot,item_price,1);
+			//trade(num,trade_slot,price,quantity)
+		}
+		//slots.push(slot);
+    }
+
 }

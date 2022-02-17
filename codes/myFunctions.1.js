@@ -4,9 +4,11 @@ var farmer_gold_keep = 10000;
 var leader = 'jmanmage';
 let party_list = ['jusMerchant', 'jmanmage', 'juspriest', 'juswar'];
 //phat_targets are priority
-let phat_targets = ['goldenbat','snowman','cutebee','phoenix','mvampire'];
+let phat_targets = ['goldenbat','snowman','cutebee','phoenix','mvampire','pinkgoo'];
 let monster_list = ['iceroamer','osnake','snake','bat','minimush','poisio','arcticbee','booboo'];
 var invites_sent = [true, false, false, false];
+const send_whitelist = ['tracker'];
+const sell_list = ['hpbelt'];
 const junk = ['ringsj', 'hpamulet', 'hpbelt','bwing'];
 const merchantTown = {map:"main",x:-175,y:-65};
 var mpot_ct;
@@ -53,15 +55,19 @@ function item_location(name) {
 function send_item_merchant() {
 	//Only executes if merchant in range
 	if(checkChar(party_list[0])==1){
+		var inv_start = 2;
+		/**
 		if(character.ctype == "warrior") {
 			var inv_start = 4;
 		} else {
 			var inv_start = 2;
 		}
+		*/
 
 		for(var i=inv_start;i<42;i++)
 		{
 			if(character.items[i]) {
+				if(send_whitelist.includes(character.items[i].name)) continue;
 				var item_count = character.items[i].q
 				send_item("jusMerchant",i,item_count);
 				sleep(100);
@@ -213,6 +219,7 @@ function checkServer() {
 	//charcter.server
 }
 
+//Log Filters
 function fixAddLog()
 {
     if (parent.addLogFixed) {
